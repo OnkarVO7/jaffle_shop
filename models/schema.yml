@@ -32,7 +32,41 @@ models:
       - name: total_order_amount
         description: Total value (AUD) of a customer's orders
 
+  - name: customers_col
+    config:
+      tags: ["model_tag_one", "model_tag_two"]
+    description: This table has basic information about a customer, as well as some derived facts based on a customer's orders
+    columns:
+      - name: customer_id
+        description: This is a unique identifier for a customer
+        tests:
+          - unique
+          - not_null
+
+      - name: first_name
+        description: Customer's first name. PII.
+
+      - name: last_name
+        description: Customer's last name. PII.
+
+      - name: first_order
+        tags: ["tags_column_one"]
+        description: Date (UTC) of a customer's first order
+
+      - name: most_recent_order
+        description: Date (UTC) of a customer's most recent order
+
+      - name: number_of_orders
+        tags: ["tags_column_one", "tags_column_two"]
+        description: Count of the number of orders a customer has placed
+
+      - name: total_order_amount
+        description: Total value (AUD) of a customer's orders
+
   - name: orders
+    tests:
+      - unique:
+          column_name: "order_date || '-' || order_id"
     description: This table has basic information about orders, as well as some derived facts based on payments
     config:
       tags: "single_tag"
@@ -85,3 +119,24 @@ models:
         description: Amount of the order (AUD) paid for by gift card
         tests:
           - not_null
+
+  - name: source_model
+    columns:
+      - name: column1
+        description: Description of column1
+      - name: column2
+        description: Description of column2
+  
+  - name: intermediate_model
+    columns:
+      - name: column1
+        description: Description of column1
+      - name: column2
+        description: Description of column2
+  
+  - name: actual_model
+    columns:
+      - name: column1
+        description: Description of column1
+      - name: column2
+        description: Description of column2
